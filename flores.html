@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Me amas?</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: linear-gradient(to bottom, #fff8dc, #ffe4e1);
+        margin: 0;
+        padding: 0;
+    }
+    .screen { display: none; padding: 20px; }
+    .active { display: block; }
+    button {
+        padding: 12px 25px;
+        margin: 10px;
+        font-size: 18px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+    .yes { background-color: #ffb6c1; }
+    .no { background-color: #d3d3d3; }
+    .back { background-color: #add8e6; font-size: 14px; }
+
+    /* Corazones animados */
+    .hearts {
+        position: relative;
+        height: 150px;
+        overflow: hidden;
+    }
+    .heart {
+        position: absolute;
+        bottom: 0;
+        width: 20px;
+        height: 20px;
+        background-color: red;
+        transform: rotate(45deg);
+        animation: floatUp 5s ease-in infinite;
+    }
+    .heart::before, .heart::after {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: red;
+        border-radius: 50%;
+    }
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { left: -10px; top: 0; }
+    @keyframes floatUp {
+        0% { transform: translateY(0) rotate(45deg); opacity: 1; }
+        100% { transform: translateY(-200px) rotate(45deg); opacity: 0; }
+    }
+
+    /* Layout flores + carta */
+    .final-content {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    .flowers img {
+        max-width: 200px;
+        height: auto;
+        border-radius: 10px;
+        animation: sway 3s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+        from { transform: rotate(-2deg); }
+        to { transform: rotate(2deg); }
+    }
+
+    /* Carta mejorada */
+    .envelope {
+        position: relative;
+        width: 200px;
+        height: 150px;
+        cursor: pointer;
+        perspective: 800px;
+    }
+    .flap {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        background: #ffb6c1;
+        transform-origin: top;
+        transition: transform 0.6s ease;
+        z-index: 2;
+        clip-path: polygon(0 0, 100% 0, 50% 100%);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .body {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #ffe4e1;
+        border: 2px solid #ffb6c1;
+        box-sizing: border-box;
+        overflow: hidden;
+        z-index: 1;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        border-radius: 5px;
+    }
+    .open-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-weight: bold;
+        font-size: 18px;
+        color: #d6336c;
+    }
+    .letter-content {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 10px;
+        background: white;
+        box-sizing: border-box;
+        transition: top 0.6s ease;
+        font-size: 14px;
+        color: #333;
+        text-align: left;
+    }
+    .envelope.open .flap {
+        transform: rotateX(-180deg);
+    }
+    .envelope.open .letter-content {
+        top: 50px;
+    }
+
+    /* Reproductor fijo */
+    .music-player {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        background: rgba(255,255,255,0.8);
+        padding: 5px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        z-index: 1000;
+    }
+    .music-player audio {
+        width: 150px;
+    }
+</style>
+</head>
+<body>
+
+<!-- Pantalla 1 -->
+<div id="screen1" class="screen active">
+    <h1>¿Me amas?</h1>
+    <button class="yes" onclick="nextScreen('screen2')">Chi</button>
+    <button class="no" onclick="sadScreen('screen1')">Ño</button>
+</div>
+
+<!-- Pantalla 2 -->
+<div id="screen2" class="screen">
+    <h1>¿Estás segura?</h1>
+    <button class="yes" onclick="nextScreen('screen3')">Chi</button>
+    <button class="no" onclick="sadScreen('screen2')">Ño</button>
+    <br><button class="back" onclick="prevScreen('screen1')">⬅ Volver</button>
+</div>
+
+<!-- Pantalla 3 -->
+<div id="screen3" class="screen">
+    <h2>Te amo con todo mi corazón mi vida, te amoooo ❤️</h2>
+
+    <div class="final-content">
+        <!-- Flores -->
+        <div class="flowers">
+            <img src="https://drive.google.com/uc?export=download&id=1ipPE7ZS0a0sZxJmV4HV5EhbsVdb6-jFX" alt="Flores amarillas">
+        </div>
+
+        <!-- Carta -->
+        <div class="envelope" onclick="openLetter()">
+            <div class="flap"></div>
+            <div class="body">
+                <span class="open-text">Ábreme</span>
+                <div class="letter-content">
+                    <!-- 💌 Tu mensaje -->
+                    <p>Mi amor, eres lo más hermoso que me ha pasado en la vida. 💖</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hearts" id="hearts"></div>
+
+    <br><button class="back" onclick="prevScreen('screen2')">⬅ Volver</button>
+</div>
+
+<!-- Pantalla triste -->
+<div id="sad" class="screen">
+    <h1>:(</h1>
+    <button class="back" onclick="goBack()">⬅ Volver</button>
+</div>
+
+<!-- Reproductor fijo -->
+<div class="music-player">
+    <audio id="music" controls loop>
+        <source src="https://drive.google.com/uc?export=download&id=1hKzDRAVCPF7_Fvwo5lMHEir95BcqzKvE" type="audio/mpeg">
+    </audio>
+</div>
+<script>
+    let lastScreen = 'screen1';
+
+    function nextScreen(id) {
+        document.querySelector('.active').classList.remove('active');
+        document.getElementById(id).classList.add('active');
+        lastScreen = id;
+        if (id === 'screen3') {
+            launchHearts();
+            playMusic();
+        }
+    }
+
+    function prevScreen(id) {
+        document.querySelector('.active').classList.remove('active');
+        document.getElementById(id).classList.add('active');
+        lastScreen = id;
+    }
+
+    function sadScreen(from) {
+        document.querySelector('.active').classList.remove('active');
+        document.getElementById('sad').classList.add('active');
+        lastScreen = from;
+    }
+
+    function goBack() {
+        document.querySelector('.active').classList.remove('active');
+        document.getElementById(lastScreen).classList.add('active');
+    }
+
+    function launchHearts() {
+        const heartsContainer = document.getElementById('hearts');
+        heartsContainer.innerHTML = '';
+        for (let i = 0; i < 15; i++) {
+            let heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.style.left = Math.random() * 90 + '%';
+            heart.style.animationDelay = (Math.random() * 2) + 's';
+            heartsContainer.appendChild(heart);
+        }
+    }
+
+    function playMusic() {
+        const music = document.getElementById('music');
+        music.play().catch(() => {
+            // En móviles, el autoplay requiere interacción previa
+            console.log("Toca el botón play para iniciar la música");
+        });
+    }
+
+    function openLetter() {
+        const envelope = document.querySelector('.envelope');
+        envelope.classList.toggle('open');
+    }
+</script>
+</body>
+</html>
